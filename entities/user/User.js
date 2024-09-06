@@ -25,20 +25,21 @@ const UserSchema = new EntitySchema({
   relations: {
     languages: {
       type: 'many-to-many',
-      target: 'User',
-      inverseSide: 'languages',
+      target: 'Language',
+      inverseSide: 'users',
       joinTable: {
-        name: 'user_languages', 
+        name: 'user_languages',
         joinColumn: {
-          name: 'language_id',
+          name: 'user_id',
           referencedColumnName: 'id',
         },
         inverseJoinColumn: {
-          name: 'user_id', 
+          name: 'language_id',
           referencedColumnName: 'id',
         },
       },
     },
+    
     role: {
       type: 'many-to-one',
       target: 'Role',

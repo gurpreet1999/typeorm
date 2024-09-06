@@ -181,6 +181,12 @@ const PartnerSchema = new EntitySchema({
       target: 'PartnerBusiness',
       mappedBy: 'partner',
     },
+
+    showreels: {
+      type: 'one-to-many',
+      target: 'PartnerShowreel',
+      mappedBy: 'partner',
+    },
   },
   
 });
@@ -762,6 +768,138 @@ const PartnerCertificatesSchema = new EntitySchema({
    
   },
 });
+
+
+const PartnerDroneTypeSchema = new EntitySchema({
+  name: 'PartnerDroneType',
+  tableName: 'partner_drone_type',
+  columns: {
+    id: {
+      type: 'int',
+      primary: true,
+      generated: true,
+    },
+    droneId: {
+      type: 'int',
+      nullable: false,
+    },
+    category: {
+      type: 'varchar',
+    },
+    description: {
+      type: 'varchar',
+    },
+    created_at: {
+      type: 'timestamp',
+      default: () => 'CURRENT_TIMESTAMP',
+    },
+    updated_at: {
+      type: 'timestamp',
+      default: () => 'CURRENT_TIMESTAMP',
+      onUpdate: 'CURRENT_TIMESTAMP',
+    },
+  },
+  relations: {
+    drones: {
+      type: 'one-to-many',
+      target: 'PartnerDrone',
+      mappedBy: 'droneType',
+    },
+  },
+});
+
+
+
+const PartnerDroneSchema = new EntitySchema({
+  name: 'PartnerDrone',
+  tableName: 'partner_drone',
+  columns: {
+    id: {
+      type: 'int',
+      primary: true,
+      generated: true,
+    },
+    partnerId: {
+      type: 'int',
+      nullable: false,
+    },
+    drone_name: {
+      type: 'varchar',
+    },
+    drone_model: {
+      type: 'varchar',
+    },
+    created_at: {
+      type: 'timestamp',
+      default: () => 'CURRENT_TIMESTAMP',
+    },
+    updated_at: {
+      type: 'timestamp',
+      default: () => 'CURRENT_TIMESTAMP',
+      onUpdate: 'CURRENT_TIMESTAMP',
+    },
+    drone_type_id: {
+      type: 'int',
+      nullable: false,
+    },
+  },
+  relations: {
+    droneType: {
+      type: 'many-to-one',
+      target: 'PartnerDroneType',
+      joinColumn: {
+        name: 'drone_type_id',
+      },
+      inverseSide: 'drones',
+    },
+  },
+});
+
+
+
+const PartnerShowreelSchema = new EntitySchema({
+  name: 'PartnerShowreel',
+  tableName: 'partner_showreels',
+  columns: {
+    id: {
+      type: 'int',
+      primary: true,
+      generated: true,
+    },
+    showreel_name: {
+      type: 'varchar',
+      nullable: false,
+    },
+    showreel_description: {
+      type: 'varchar',
+      nullable: true,
+    },
+    youtube_video_link: {
+      type: 'varchar',
+      nullable: true,
+    },
+    keyword: {
+      type: 'varchar',
+      nullable: true,
+    },
+    category: {
+      type: 'varchar',
+      nullable: true,
+    },
+  },
+  relations: {
+    partner: {
+      type: 'many-to-one',
+      target: 'Partner',
+      joinColumn: {
+        name: 'partnerId',
+      },
+      inverseSide: 'showreels',
+      onDelete: 'CASCADE',
+    },
+  },
+});
+
 
 
 
